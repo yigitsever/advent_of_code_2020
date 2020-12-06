@@ -33,5 +33,20 @@ with open("input", "r") as passes:
 
 seat_ids.sort()
 
-# answer to first part
+# answer to the first part
 print(seat_ids[-1])
+
+# answer to the second part
+lent = len(seat_ids)
+left = 0
+right = lent - 1
+cursor = 0
+
+while right - left > 1:
+    cursor = math.ceil((left + right) / 2)
+    if (seat_ids[left] - left) != (seat_ids[cursor] - cursor):
+        right = cursor
+    elif (seat_ids[right] - right) != (seat_ids[cursor] - cursor):
+        left = cursor
+
+print(seat_ids[cursor] + 1)
