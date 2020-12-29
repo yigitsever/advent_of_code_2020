@@ -2,13 +2,11 @@ use strict;
 use warnings;
 use DDP;
 use Smart::Comments;
+use List::Util qw(sum min);
 
-my @lines = <>;
+my @jolts = sort { $a <=> $b } map { int } <>;
 
-my @jolts = map { s/\n$//r } @lines;
-@jolts = sort { $a <=> $b } @jolts;
-
-# p @jolts;
+@jolts = (0, @jolts, $jolts[-1] + 3);
 
 my %diffs;
 
@@ -19,9 +17,13 @@ foreach my $joltage (@jolts) {
     $curr = $joltage;
 }
 
-# and the built-in adapter
-$diffs{3}++;
-
 p %diffs;
 
 print($diffs{1} * $diffs{3});
+
+my @memoi = (1);
+for my $k (1..$#jolts) {
+    push @memoi, sum map {$memoi[$k-$_]} grep {$jolts[$k-$_]+3 >= $jolts[$k]} 1..min($k,3);
+}
+
+print "\n$memoi[-1]"
